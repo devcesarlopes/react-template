@@ -2,6 +2,12 @@ import { useRef, useState } from "react";
 import { ColumnOrColumnGroup, DataGrid, DataGridHandle, DataGridProps, RowsChangeData, SortColumn } from "react-data-grid";
 import { exportRowsToCsv } from "@/utils/export";
 
+function isColumn<R, SR>(
+  col: ColumnOrColumnGroup<R, SR>
+): col is ColumnOrColumnGroup<R, SR> & { key: keyof R } {
+  return "key" in col && !("children" in col); // Exclude ColumnGroup
+}
+
 const selectCell = <R, _K>({
   row,
   selectedRows,
@@ -52,6 +58,10 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 	const [selectionMode, setSelectionMode] = useState(false);
 	const [selectedRows, setSelectedRows] = useState<Set<React.Key>>(new Set());
 	const [sortColumns, setSortColumns] = useState<SortColumn[]>([]);
+	const [searchOpen, setSearchOpen] = useState(false);
+	const [searchTerm, setSearchTerm] = useState("");
+	const [matchedCells, setMatchedCells] = useState<{ rowIdx: number; colIdx: number }[]>([]);
+	const [currentMatchIdx, setCurrentMatchIdx] = useState(0);
 
 	const indexColumn: ColumnOrColumnGroup<NoInfer<R>, NoInfer<SR>> = selectionMode
 		? {
@@ -133,8 +143,79 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 		setSelectedRows(new Set());
 	};
 
+	// Search
+	const toggleOpenSearch = () => {
+		setSearchOpen(!searchOpen);
+		setSearchTerm("");
+		setMatchedCells([]);
+		setCurrentMatchIdx(-1);
+	};
+	
+	const handleSearch = (term: string) => {
+		setSearchTerm(term);
+		const matches: { rowIdx: number; colIdx: number }[] = [];
+
+		if (term === "") {
+			// Reset everything if search is cleared
+			setMatchedCells([]);
+			setCurrentMatchIdx(-1);
+			return;
+		}
+	
+		rows.forEach((row, rowIdx) => {
+			props.columns.filter(col => isColumn(col)).forEach((col, colIdx) => {
+				const cellValue = row[col.key as keyof R];
+				if (typeof cellValue === "string" &&
+						cellValue.toLowerCase().includes(term.toLowerCase())) {
+					matches.push({ rowIdx, colIdx: colIdx + 1 }); // +1 for indexColumn
+				}
+			});
+		});
+	
+		setMatchedCells(matches);
+		setCurrentMatchIdx(-1); // Reset to the first match, but don't scroll
+	};
+
+	const scrollToMatch = (direction: "up" | "down") => {
+		if (matchedCells.length === 0) return;
+	
+		let nextIdx = currentMatchIdx;
+	
+		if (direction === "down") {
+			nextIdx = (currentMatchIdx + 1) % matchedCells.length;
+		} else {
+			nextIdx = (currentMatchIdx - 1 + matchedCells.length) % matchedCells.length;
+		}
+	
+		setCurrentMatchIdx(nextIdx);
+	
+		if (gridRef.current) {
+			gridRef.current.scrollToCell(matchedCells[nextIdx]);
+		}
+	};
+
+	const highlightClass = (rowIdx: number, colIdx: number) => {
+		if (matchedCells.length === 0) return "";
+		return matchedCells.some(match => match.rowIdx === rowIdx && match.colIdx === colIdx)
+			? "bg-red-200"
+			: "";
+	};
+	
+	const enhancedColumns = columnWithIndex.map((col, colIdx) =>
+		isColumn(col)
+			? {
+					...col,
+					cellClass: (row: R) => {
+						const rowIdx = rows.findIndex(r => props.rowKeyGetter(r) === props.rowKeyGetter(row));
+						const highlight = highlightClass(rowIdx, colIdx);
+						return highlight;
+					}
+				}
+			: col
+	);
+
 	return (
-		<div className="flex w-full flex-col overflow-x-auto">
+		<div className="flex w-full flex-col overflow-x-auto relative">
 			<div className="flex gap-2 p-2">
 				<button
 					onClick={handleAddRow}
@@ -162,7 +243,38 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 				>
 					Export to CSV
 				</button>
+				<button
+					onClick={toggleOpenSearch}
+					className="rounded bg-blue-500 px-3 py-1 text-white"
+				>
+					Search
+				</button>
 			</div>
+			{searchOpen && (
+				<div className="absolute top-[-48] left-10 bg-white p-2 shadow-md border z-50">
+					<div className="flex justify-between items-center">
+						<span className="text-xs">
+							{matchedCells.length > 0 
+								? currentMatchIdx >= 0 
+									? `${currentMatchIdx + 1} of ${matchedCells.length} results`
+									: `${matchedCells.length} results`
+								: "Type to Search"}
+						</span>
+						<div className="flex gap-1">
+							<button onClick={() => scrollToMatch("up")}>&uarr;</button>
+							<button onClick={() => scrollToMatch("down")}>&darr;</button>
+							<button onClick={toggleOpenSearch} className="text-black text-xl pb-1">&times;</button>
+						</div>
+					</div>
+					<input
+						type="text"
+						placeholder="Search..."
+						value={searchTerm}
+						onChange={(e) => handleSearch(e.target.value)}
+						className="border p-1 text-sm"
+					/>
+				</div>
+			)}
 			<div className="min-w-[1000px]">
 				<DataGrid
 					ref={gridRef}
@@ -170,7 +282,7 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 					sortColumns={sortColumns}
           {...props}
           rows={sortedRows}
-          columns={columnWithIndex}
+          columns={enhancedColumns}
 					onRowsChange={handleRowsChange}
 					onSortColumnsChange={setSortColumns}
 				/>
