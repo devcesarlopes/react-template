@@ -1,0 +1,17 @@
+{
+	/* tailwind classes on styled prop (windstich, etc) */
+	// "tailwindCSS.experimental.classRegex": [
+	// 	"styled\\.(.*)",
+	// 	"(?:'|\"|`)([^']*)(?:'|\"|`)"
+	// ],
+	"editor.formatOnSave": true, // prettier format on save
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit" // eslint format on save (imports and other rules)
+	},
+	"editor.tabSize": 2,
+	/* alias autoimport */
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+	"typescript.preferences.importModuleSpecifierEnding": "auto",
+	"javascript.preferences.importModuleSpecifier": "non-relative",
+	"javascript.preferences.importModuleSpecifierEnding": "auto"
+}
