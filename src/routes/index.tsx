@@ -1,12 +1,14 @@
 import { useState } from 'react';
-
+import { createFileRoute } from '@tanstack/react-router';
 import { twMerge } from 'tailwind-merge';
-
 import reactLogo from '@/assets/react.svg';
-
 import { MyComponent } from '@/components/MyComponent';
 
-function App() {
+export const Route = createFileRoute('/')({
+	component: Index,
+});
+
+function Index() {
 	const [count, setCount] = useState(0);
 
 	return (
@@ -45,5 +47,3 @@ function App() {
 		</>
 	);
 }
-
-export default App;
