@@ -72,7 +72,7 @@ export default tseslint.config(
 					],
 					pathGroupsExcludedImportTypes: ['react'],
 					distinctGroup: true,
-					'newlines-between': 'always',
+					'newlines-between': 'never',
 					alphabetize: {
 						order: 'asc',
 						caseInsensitive: true,
