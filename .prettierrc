@@ -3,7 +3,7 @@
 	"tailwindAttributes": ["className"],
 	"semi": true,
 	"useTabs": true,
-	"singleQuote": true,
-	"jsxSingleQuote": true,
+	"singleQuote": false,
+	"jsxSingleQuote": false,
 	"tabWidth": 2
 }

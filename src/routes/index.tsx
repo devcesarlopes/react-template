@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
-import { twMerge } from 'tailwind-merge';
-import reactLogo from '@/assets/react.svg';
-import { MyComponent } from '@/components/MyComponent';
+import { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { twMerge } from "tailwind-merge";
+import reactLogo from "@/assets/react.svg";
+import { MyComponent } from "@/components/MyComponent";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
 	component: Index,
 });
 
@@ -14,20 +14,20 @@ function Index() {
 	return (
 		<>
 			<div>
-				<a href='https://vite.dev' target='_blank'>
-					<img src={'/vite.svg'} className='logo' alt='Vite logo' />
+				<a href="https://vite.dev" target="_blank">
+					<img src={"/vite.svg"} className="logo" alt="Vite logo" />
 				</a>
-				<a href='https://react.dev' target='_blank'>
-					<img src={reactLogo} className='logo react' alt='React logo' />
+				<a href="https://react.dev" target="_blank">
+					<img src={reactLogo} className="logo react" alt="React logo" />
 				</a>
 			</div>
 			<h1>Vite + React</h1>
-			<div className='card'>
+			<div className="card">
 				<button
 					className={twMerge(
-						'bg-orange-400 p-3 text-white',
-						count && 'bg-red-600',
-						count > 10 && 'bg-blue-900',
+						"bg-orange-400 p-3 text-white",
+						count && "bg-red-600",
+						count > 10 && "bg-blue-900",
 					)}
 					onClick={() => setCount((count) => count + 1)}
 				>
@@ -37,10 +37,10 @@ function Index() {
 					Edit <code>src/App.tsx</code> and save to test HMR
 				</p>
 			</div>
-			<p className='bg-slate-900 text-3xl font-bold underline'>
+			<p className="bg-slate-900 text-3xl font-bold underline">
 				Click on the Vite and React logos to learn more
 			</p>
-			<p className='bg-gray-100 text-3xl font-bold underline'>
+			<p className="bg-gray-100 text-3xl font-bold underline">
 				Click on the Vite and React logos to learn more
 			</p>
 			<MyComponent />

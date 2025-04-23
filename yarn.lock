@@ -50,7 +50,7 @@
     json5 "^2.2.3"
     semver "^6.3.1"
 
-"@babel/generator@^7.26.10", "@babel/generator@^7.26.8", "@babel/generator@^7.27.0":
+"@babel/generator@^7.23.5", "@babel/generator@^7.26.10", "@babel/generator@^7.26.8", "@babel/generator@^7.27.0":
   version "7.27.0"
   resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.27.0.tgz#764382b5392e5b9aff93cadb190d0745866cbc2c"
   integrity sha512-VybsKvpiN1gU1sdMZIp7FcqphVVKEwcuj02x73uvcHE0PTihx1nlBcowYWhDwjpoAXRv43+gDzyggGnn1XZhVw==
@@ -452,6 +452,13 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
+
+"@linaria/core@^6.3.0":
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@linaria/core/-/core-6.3.0.tgz#72ece32641f9da43be7b644b619db9f248d9a058"
+  integrity sha512-fs1aQyX4DmJpeGMyobuSznAo/Y02+Q8vhm+c/jr2WHDmqKHEJpCqH2Mhu1End+SdiUvZIUgb4MNiZryWtZLD5g==
+  dependencies:
+    "@wyw-in-js/processor-utils" "^0.6.0"
 
 "@napi-rs/wasm-runtime@^0.2.9":
   version "0.2.9"
@@ -1040,6 +1047,23 @@
   dependencies:
     "@swc/core" "^1.11.21"
 
+"@wyw-in-js/processor-utils@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@wyw-in-js/processor-utils/-/processor-utils-0.6.0.tgz#9e37c6c8ca3425cb7ba5afc2dfd5101aba972c31"
+  integrity sha512-5YAZMUmF+S2HaqheKfew6ybbYBMnF10PjIgI7ieyuFxCohyqJNF4xdo6oHftv2z5Z4vCQ0OZHtDOQyDImBYwmg==
+  dependencies:
+    "@babel/generator" "^7.23.5"
+    "@wyw-in-js/shared" "0.6.0"
+
+"@wyw-in-js/shared@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@wyw-in-js/shared/-/shared-0.6.0.tgz#20dbaeb38b3f80cfe3ed6f9c7df2eaf0bcf5d9ec"
+  integrity sha512-BozBos29AuMWOvjjKf+bYYN+Vku0Nar6+y5oxrJXIZzUEKiWTVnIxO256vi8cUBGfo/DH44o+qZTkkdSN2pPXw==
+  dependencies:
+    debug "^4.3.4"
+    find-up "^5.0.0"
+    minimatch "^9.0.3"
+
 acorn-jsx@^5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
@@ -1316,7 +1340,7 @@ chokidar@^3.6.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-clsx@^2.1.1:
+clsx@^2.0.0, clsx@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-2.1.1.tgz#eed397c9fd8bd882bfb18deab7102049a2f32999"
   integrity sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==
@@ -2415,7 +2439,7 @@ minimatch@^3.1.2:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimatch@^9.0.4:
+minimatch@^9.0.3, minimatch@^9.0.4:
   version "9.0.5"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-9.0.5.tgz#d74f9dd6b57d83d8e98cfb82133b03978bc929e5"
   integrity sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow==
@@ -2714,6 +2738,13 @@ queue-microtask@^1.2.2:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
+
+react-data-grid@^7.0.0-beta.52:
+  version "7.0.0-beta.52"
+  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-7.0.0-beta.52.tgz#ecfe719bc19bc8fe7d985b1ecd5c417761501121"
+  integrity sha512-2r4Z4+Xvol4da3QXIasmptSxwnzjd0Hv43joN5+DwogqKtQDWq+82QBXgZrGo5tIqTrnDSSukpsPSGwaKi6ALw==
+  dependencies:
+    clsx "^2.0.0"
 
 react-dom@^19.0.0:
   version "19.1.0"

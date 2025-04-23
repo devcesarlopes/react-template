@@ -10,40 +10,40 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root';
-import { Route as AboutImport } from './routes/about';
-import { Route as IndexImport } from './routes/index';
+import { Route as rootRoute } from "./routes/__root";
+import { Route as GridImport } from "./routes/grid";
+import { Route as IndexImport } from "./routes/index";
 
 // Create/Update Routes
 
-const AboutRoute = AboutImport.update({
-	id: '/about',
-	path: '/about',
+const GridRoute = GridImport.update({
+	id: "/grid",
+	path: "/grid",
 	getParentRoute: () => rootRoute,
 } as any);
 
 const IndexRoute = IndexImport.update({
-	id: '/',
-	path: '/',
+	id: "/",
+	path: "/",
 	getParentRoute: () => rootRoute,
 } as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
 	interface FileRoutesByPath {
-		'/': {
-			id: '/';
-			path: '/';
-			fullPath: '/';
+		"/": {
+			id: "/";
+			path: "/";
+			fullPath: "/";
 			preLoaderRoute: typeof IndexImport;
 			parentRoute: typeof rootRoute;
 		};
-		'/about': {
-			id: '/about';
-			path: '/about';
-			fullPath: '/about';
-			preLoaderRoute: typeof AboutImport;
+		"/grid": {
+			id: "/grid";
+			path: "/grid";
+			fullPath: "/grid";
+			preLoaderRoute: typeof GridImport;
 			parentRoute: typeof rootRoute;
 		};
 	}
@@ -52,38 +52,38 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-	'/': typeof IndexRoute;
-	'/about': typeof AboutRoute;
+	"/": typeof IndexRoute;
+	"/grid": typeof GridRoute;
 }
 
 export interface FileRoutesByTo {
-	'/': typeof IndexRoute;
-	'/about': typeof AboutRoute;
+	"/": typeof IndexRoute;
+	"/grid": typeof GridRoute;
 }
 
 export interface FileRoutesById {
 	__root__: typeof rootRoute;
-	'/': typeof IndexRoute;
-	'/about': typeof AboutRoute;
+	"/": typeof IndexRoute;
+	"/grid": typeof GridRoute;
 }
 
 export interface FileRouteTypes {
 	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths: '/' | '/about';
+	fullPaths: "/" | "/grid";
 	fileRoutesByTo: FileRoutesByTo;
-	to: '/' | '/about';
-	id: '__root__' | '/' | '/about';
+	to: "/" | "/grid";
+	id: "__root__" | "/" | "/grid";
 	fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
 	IndexRoute: typeof IndexRoute;
-	AboutRoute: typeof AboutRoute;
+	GridRoute: typeof GridRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
 	IndexRoute: IndexRoute,
-	AboutRoute: AboutRoute,
+	GridRoute: GridRoute,
 };
 
 export const routeTree = rootRoute
@@ -97,14 +97,14 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/grid"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/grid": {
+      "filePath": "grid.tsx"
     }
   }
 }
