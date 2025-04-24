@@ -103,7 +103,7 @@ function Grid() {
 
 	return (
 		<div className="flex w-full flex-col">
-			<div className="h-[100px] w-[100px]">Hello from Grid!</div>
+			<div>Hello from Grid!</div>
 			<TableDataGrid 
 				columns={columns} 
 				rows={initialRows} 
@@ -119,6 +119,7 @@ function Grid() {
 					price: 0,
 				})}
 			/>
+			<div>Bye from Grid!</div>
 		</div>
 	);
 }

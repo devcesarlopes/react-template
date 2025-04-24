@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { ColumnOrColumnGroup, DataGrid, DataGridHandle, DataGridProps, RowsChangeData, SortColumn } from "react-data-grid";
+import { twMerge } from "tailwind-merge";
 import { exportRowsToCsv } from "@/utils/export";
 
 function isColumn<R, SR>(
@@ -58,10 +59,14 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 	const [selectionMode, setSelectionMode] = useState(false);
 	const [selectedRows, setSelectedRows] = useState<Set<React.Key>>(new Set());
 	const [sortColumns, setSortColumns] = useState<SortColumn[]>([]);
+	//Search
 	const [searchOpen, setSearchOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [matchedCells, setMatchedCells] = useState<{ rowIdx: number; colIdx: number }[]>([]);
 	const [currentMatchIdx, setCurrentMatchIdx] = useState(0);
+	//FullScreen
+	const [isFullScreen, setIsFullScreen] = useState(false);
+
 
 	const indexColumn: ColumnOrColumnGroup<NoInfer<R>, NoInfer<SR>> = selectionMode
 		? {
@@ -106,6 +111,8 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 					return 0;
 				});
 
+	// -------- Edit Rows -------- //
+
 	const handleRowsChange = (
 		updatedRows: NoInfer<R>[],
 		{ indexes }: RowsChangeData<NoInfer<R>, NoInfer<SR>>,
@@ -118,7 +125,8 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 		setRows(nextRows);
 	};
 
-	// Add new row with default values
+	// -------- Add Rows -------- //
+
 	const handleAddRow = () => {
     const newRow = props.newRowDefaultValues(rows);
 		setRows([...rows, newRow]);
@@ -129,6 +137,8 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 		}, 200);
 	};
 
+	// -------- Delete Rows -------- //
+
 	const toggleSelectionMode = () => {
 		if (selectionMode) {
 			setSelectedRows(new Set()); // Clear selections
@@ -136,14 +146,14 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 		setSelectionMode(!selectionMode);
 	};
 
-	// Delete selected rows
 	const handleDeleteRows = () => {  
 		const filteredRows = rows.filter((row) => !selectedRows.has(props.rowKeyGetter(row)));
 		setRows(filteredRows);
 		setSelectedRows(new Set());
 	};
 
-	// Search
+	// -------- Search -------- //
+
 	const toggleOpenSearch = () => {
 		setSearchOpen(!searchOpen);
 		setSearchTerm("");
@@ -214,8 +224,18 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 			: col
 	);
 
+	// -------- FullScreen -------- //
+	const toggleFullScreen = () => {
+		setIsFullScreen(!isFullScreen);
+	};
+
 	return (
-		<div className="flex w-full flex-col overflow-x-auto relative">
+		<div className={
+			twMerge(
+				"flex w-full flex-col relative", 
+				isFullScreen ? "fixed inset-0 z-50 bg-white p-4 h-screen" : "overflow-x-auto"
+			)
+		}>
 			<div className="flex gap-2 p-2">
 				<button
 					onClick={handleAddRow}
@@ -249,6 +269,12 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 				>
 					Search
 				</button>
+				<button
+					onClick={toggleFullScreen}
+					className="rounded bg-blue-500 px-3 py-1 text-white"
+				>
+					{isFullScreen ? "Exit Full Screen" : "Full Screen"}
+				</button>
 			</div>
 			{searchOpen && (
 				<div className="absolute top-[-48] left-10 bg-white p-2 shadow-md border z-50">
@@ -275,10 +301,10 @@ export const TableDataGrid = <R, SR = unknown, K extends React.Key = React.Key>(
 					/>
 				</div>
 			)}
-			<div className="min-w-[1000px]">
+			<div className={twMerge("min-w-[1000px", isFullScreen && "h-screen")}>
 				<DataGrid
 					ref={gridRef}
-					className="rdg-light"
+					className={twMerge("rdg-light", isFullScreen && "h-[90%]")}
 					sortColumns={sortColumns}
           {...props}
           rows={sortedRows}
